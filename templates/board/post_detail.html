@@ -13,9 +13,12 @@
     <div class="comment">
       <div class="meta">{{ c.author_name }} · {{ c.created_at|date:"Y-m-d H:i" }} · IP {{ c.ip_address }}</div>
       <div class="comment-body">
-        {# ───────── 저장형 XSS 출력 경로 ─────────
-           LAB_COMMENTS_RENDER_SAFE=True(취약) 이면 이스케이프 없이 렌더 → <script> 실행.
-           False(base/fixed) 이면 Django 자동 이스케이프 → 코드가 텍스트로 표시(안전). #}
+        {% comment %}
+          ───────── 저장형 XSS 출력 경로 ─────────
+          LAB_COMMENTS_RENDER_SAFE=True(취약) 이면 이스케이프 없이 렌더 → <script> 실행.
+          False(base/fixed) 이면 Django 자동 이스케이프 → 코드가 텍스트로 표시(안전).
+          (여러 줄 주석은 {# #} 가 아니라 {% comment %} 를 써야 한다.)
+        {% endcomment %}
         {% if lab_render_safe %}
           {{ c.body|safe }}
         {% else %}
