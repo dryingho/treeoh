@@ -1,0 +1,10 @@
+# portfolio-incident-lab - Python 의존성
+# 대상: Python 3.12, Django 5.2 LTS (Python 3.10-3.13 호환)
+# 주의: 본 저장소의 로컬 개발 호스트는 Python 3.14일 수 있으나,
+#       VM 데모 기준은 Python 3.12 입니다. (README 호환성 표 참고)
+
+Django==5.2.7
+psycopg[binary]==3.2.3
+python-dotenv==1.0.1
+Pillow==11.0.0
+gunicorn==23.0.0

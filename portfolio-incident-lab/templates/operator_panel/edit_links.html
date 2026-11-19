@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}메인 링크 수정{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>메인 페이지 링크 수정</h2>
+  <p class="muted">이 엔드포인트가 '사이트 변조'의 대상입니다. 변경 시 전/후 값과 시각이 감사 로그에 기록됩니다.</p>
+  {% for l in links %}
+    <form method="post" style="border-top:1px solid var(--line);padding:12px 0">
+      {% csrf_token %}
+      <input type="hidden" name="key" value="{{ l.key }}">
+      <label>{{ l.label }} (<code>{{ l.key }}</code>) — 현재: <span class="muted">{{ l.url }}</span></label>
+      <input type="text" name="url" value="{{ l.url }}">
+      <p><button class="btn" type="submit">변경</button></p>
+    </form>
+  {% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}프로필 수정{% endblock %}
+{% block content %}
+<section class="card" style="max-width:560px">
+  <h2>프로필/소개 수정</h2>
+  <form method="post">
+    {% csrf_token %}
+    <label>표시 이름</label>
+    <input type="text" name="display_name" value="{{ profile.display_name }}" maxlength="80">
+    <label>소개 문구</label>
+    <textarea name="bio">{{ profile.bio }}</textarea>
+    <p><button class="btn" type="submit">저장</button>
+       <a class="btn secondary" href="{% url 'operator:dashboard' %}">취소</a></p>
+  </form>
+</section>
+{% endblock %}

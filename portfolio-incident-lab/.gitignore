@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Django
+*.log
+local_settings.py
+
+# 환경 변수 (실습용 .env 는 커밋하지 않음)
+.env
+
+# 업로드/증거 (실습 런타임 데이터) - 저장소에 커밋하지 않음
+shared/uploads/avatars/*
+shared/uploads/_evidence/*
+!shared/uploads/avatars/.gitkeep
+!shared/uploads/_evidence/.gitkeep
+
+# 로컬 수집기 로그
+lab_collector/*.log
+!lab_collector/.gitkeep
+
+# collectstatic 산출물
+staticfiles/
+
+# git 이력 노출 실습 저장소(스크립트로 생성)
+git_exposure_demo/
+
+# OS
+.DS_Store
+Thumbs.db

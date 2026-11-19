@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}실습 상태{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>실습 상태 확인</h2>
+  <p class="muted">공격을 수행하지 않습니다. 각 단계의 '관측 가능한 흔적'만 보여줍니다. (JSON: <a href="?format=json">?format=json</a>)</p>
+  <p>현재 모드: <span class="badge {% if data.mode == 'vulnerable' %}danger{% elif data.mode == 'fixed' %}ok{% endif %}">{{ data.mode }}</span></p>
+</section>
+
+<section class="card">
+  <h3>설정 플래그</h3>
+  <table>
+    <tr><td>LAB_COMMENTS_RENDER_SAFE</td><td><code>{{ data.flags.LAB_COMMENTS_RENDER_SAFE }}</code></td><td class="muted">True=저장형 XSS 발생</td></tr>
+    <tr><td>SESSION_COOKIE_HTTPONLY</td><td><code>{{ data.flags.SESSION_COOKIE_HTTPONLY }}</code></td><td class="muted">False=쿠키 탈취 가능</td></tr>
+    <tr><td>LAB_UPLOAD_VALIDATE_IMAGE</td><td><code>{{ data.flags.LAB_UPLOAD_VALIDATE_IMAGE }}</code></td><td class="muted">False=임의 파일 업로드</td></tr>
+    <tr><td>LAB_UPLOAD_ALLOWED_EXT</td><td><code>{{ data.flags.LAB_UPLOAD_ALLOWED_EXT }}</code></td><td></td></tr>
+  </table>
+</section>
+
+<section class="card">
+  <h3>관측된 흔적 (DB/파일 사실)</h3>
+  <table>
+    <tr><td>게시글</td><td>{{ data.counts.posts }}</td></tr>
+    <tr><td>댓글</td><td>{{ data.counts.comments }}</td></tr>
+    <tr><td>스크립트성 댓글</td><td>{{ data.counts.comments_script_like }}</td></tr>
+    <tr><td>변조된 링크</td><td>{{ data.counts.defaced_links }}</td></tr>
+    <tr><td>업로드 실행 후보</td><td>{{ data.counts.upload_exec_candidates }}</td></tr>
+    <tr><td>수집기 수신(모의)</td><td>{{ data.counts.collector_hits }} (sessionid 포함 {{ data.counts.collector_hits_with_sessionid }})</td></tr>
+    <tr><td>가상 고객</td><td>{{ data.counts.demo_customers }}</td></tr>
+    <tr><td>감사 로그</td><td>{{ data.counts.audit_logs }}</td></tr>
+  </table>
+</section>
+
+<section class="card">
+  <h3>서버 실행 증거 파일</h3>
+  {% if data.evidence_files %}
+    <ul>{% for f in data.evidence_files %}<li><code>{{ f }}</code></li>{% endfor %}</ul>
+  {% else %}
+    <p class="muted">아직 없음. (업로드한 스크립트가 실행 서비스에서 실행되면 생성됩니다.)</p>
+  {% endif %}
+</section>
+{% endblock %}

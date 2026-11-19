@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}소개{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>소개</h2>
+  {% if profile %}
+    <h3>{{ profile.display_name }}</h3>
+    <p>{{ profile.bio }}</p>
+  {% endif %}
+  <p class="muted">본 소개 페이지는 교육용 가상 환경의 일부입니다.</p>
+</section>
+{% endblock %}

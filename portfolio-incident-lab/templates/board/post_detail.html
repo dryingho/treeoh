@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<section class="card {% if post.is_scenario_clue %}scenario-clue{% endif %}">
+  <h2>{{ post.title }}</h2>
+  <p class="muted">{{ post.author_name }} · {{ post.created_at|date:"Y-m-d H:i" }}</p>
+  <p>{{ post.body|linebreaksbr }}</p>
+</section>
+
+<section class="card">
+  <h3>댓글 ({{ comments|length }})</h3>
+  {% for c in comments %}
+    <div class="comment">
+      <div class="meta">{{ c.author_name }} · {{ c.created_at|date:"Y-m-d H:i" }} · IP {{ c.ip_address }}</div>
+      <div class="comment-body">
+        {# ───────── 저장형 XSS 출력 경로 ─────────
+           LAB_COMMENTS_RENDER_SAFE=True(취약) 이면 이스케이프 없이 렌더 → <script> 실행.
+           False(base/fixed) 이면 Django 자동 이스케이프 → 코드가 텍스트로 표시(안전). #}
+        {% if lab_render_safe %}
+          {{ c.body|safe }}
+        {% else %}
+          {{ c.body }}
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <p class="muted">첫 댓글을 남겨보세요.</p>
+  {% endfor %}
+
+  <h4>댓글 작성</h4>
+  <form method="post" action="{% url 'board:add_comment' post.pk %}">
+    {% csrf_token %}
+    <label>작성자</label>
+    <input type="text" name="author_name" maxlength="80" placeholder="익명">
+    <label>내용</label>
+    <textarea name="body" required></textarea>
+    <p><button class="btn" type="submit">등록</button></p>
+  </form>
+</section>
+{% endblock %}

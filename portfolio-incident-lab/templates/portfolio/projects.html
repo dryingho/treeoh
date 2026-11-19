@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}프로젝트{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>프로젝트</h2>
+  <div class="grid">
+    {% for p in projects %}
+      <div class="card">
+        <h4>{{ p.title }}</h4>
+        <p class="muted">{{ p.summary }}</p>
+        <p>{{ p.description }}</p>
+        <code>{{ p.tech }}</code>
+      </div>
+    {% empty %}
+      <p class="muted">등록된 프로젝트가 없습니다.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

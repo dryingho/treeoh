@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}운영자 로그인{% endblock %}
+{% block content %}
+<section class="card" style="max-width:420px;margin:0 auto">
+  <h2>운영자 로그인</h2>
+  <p class="muted">/operator/ 는 Django 기본 admin 과 별개의 운영자 화면입니다.</p>
+  <form method="post">
+    {% csrf_token %}
+    <label>아이디</label>
+    <input type="text" name="username" autofocus required>
+    <label>비밀번호</label>
+    <input type="password" name="password" required>
+    <p><button class="btn" type="submit">로그인</button></p>
+  </form>
+  <p class="muted">실습 계정: <code>operator</code> / <code>operator123!</code></p>
+</section>
+{% endblock %}

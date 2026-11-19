@@ -1,0 +1,17 @@
+[Unit]
+Description=portfolio-incident-lab - Django web (실습)
+After=postgresql.service network.target
+Wants=postgresql.service
+
+[Service]
+Type=simple
+# 아래 경로/사용자는 실제 환경에 맞게 수정하세요.
+User=labuser
+WorkingDirectory=/opt/portfolio-incident-lab
+EnvironmentFile=/opt/portfolio-incident-lab/.env
+Environment=LAB_MEDIA_ROOT=/opt/portfolio-incident-lab/shared/uploads
+ExecStart=/opt/portfolio-incident-lab/.venv/bin/python manage.py runserver 0.0.0.0:8000
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
