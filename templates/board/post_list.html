@@ -1,25 +1,22 @@
 {% extends "base.html" %}
-{% block title %}게시판{% endblock %}
+{% block title %}블로그 · 오주성{% endblock %}
 {% block content %}
-<section class="card">
-  <h2>게시판</h2>
-  <table>
-    <thead><tr><th>제목</th><th>작성자</th><th>작성일</th></tr></thead>
-    <tbody>
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow">Blog</p>
+    <h2>블로그</h2>
+  </div>
+  <ul class="post-list">
     {% for post in posts %}
-      <tr>
-        <td>
-          <a href="{% url 'board:detail' post.pk %}">{{ post.title }}</a>
-          {% if post.is_notice %}<span class="badge">공지</span>{% endif %}
-          {% if post.is_scenario_clue %}<span class="badge warn">시나리오 단서</span>{% endif %}
-        </td>
-        <td>{{ post.author_name }}</td>
-        <td class="muted">{{ post.created_at|date:"Y-m-d H:i" }}</td>
-      </tr>
+      <li>
+        <a href="{% url 'board:detail' post.pk %}">
+          {% if post.is_notice %}<span class="badge">공지</span> {% endif %}{{ post.title }}
+        </a>
+        <span class="when">{{ post.author_name }} · {{ post.created_at|date:"Y.m.d" }}</span>
+      </li>
     {% empty %}
-      <tr><td colspan="3" class="muted">게시글이 없습니다.</td></tr>
+      <li class="muted">아직 글이 없습니다.</li>
     {% endfor %}
-    </tbody>
-  </table>
+  </ul>
 </section>
 {% endblock %}

@@ -11,7 +11,8 @@ def home(request):
         "profile": OperatorProfile.objects.first(),
         "links": SiteLink.objects.all(),
         "projects": Project.objects.all()[:3],
-        "recent_posts": Post.objects.order_by("-created_at")[:5],
+        # 프런트 페이지는 실제 포트폴리오처럼 보이도록 시나리오 단서 글은 제외한다.
+        "recent_posts": Post.objects.filter(is_scenario_clue=False).order_by("-created_at")[:5],
     })
 
 

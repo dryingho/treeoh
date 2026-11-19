@@ -1,47 +1,57 @@
 {% extends "base.html" %}
-{% block title %}홈 · 오주성 포트폴리오(실습){% endblock %}
+{% block title %}오주성 · Portfolio{% endblock %}
 {% block content %}
-<section class="card">
-  {% if profile %}
-    {% if profile.avatar_url %}<img src="{{ profile.avatar_url }}" alt="프로필" width="96" style="border-radius:50%">{% endif %}
-    <h2>{{ profile.display_name }}</h2>
-    <p>{{ profile.bio }}</p>
-  {% else %}
-    <h2>오주성 포트폴리오</h2>
-    <p class="muted">프로필이 아직 설정되지 않았습니다.</p>
-  {% endif %}
-
-  <h3>바로가기</h3>
-  <ul>
-    {% for link in links %}
-      <li>
-        {# 클릭 시 이동(클릭형). 페이지 접속 즉시 리다이렉트 아님. #}
-        <a href="{{ link.url }}">{{ link.label }}</a>
-        {% if link.is_defaced %}<span class="badge danger">변조됨</span>
-          <span class="muted">({{ link.updated_at }} · by {{ link.updated_by }})</span>{% endif %}
-      </li>
-    {% endfor %}
-  </ul>
+<section class="hero">
+  <div class="hero-inner">
+    {% if profile.avatar_url %}
+      <img class="hero-avatar" src="{{ profile.avatar_url }}" alt="프로필">
+    {% else %}
+      <div class="hero-avatar">{{ profile.display_name|first|default:"O" }}</div>
+    {% endif %}
+    <p class="eyebrow">Backend · Security Engineer</p>
+    <h1 class="hero-title">{{ profile.display_name|default:"오주성" }}</h1>
+    <p class="hero-sub">{{ profile.bio|default:"백엔드와 보안에 관심이 많은 개발자입니다." }}</p>
+    <div class="hero-cta">
+      {% for link in links %}
+        <a class="btn {% if not forloop.first %}secondary{% endif %}" href="{{ link.url }}">{{ link.label }}</a>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 
-<section class="card">
-  <h3>대표 프로젝트</h3>
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow">Work</p>
+    <h2>대표 프로젝트</h2>
+  </div>
   <div class="grid">
     {% for p in projects %}
-      <div class="card"><h4>{{ p.title }}</h4><p class="muted">{{ p.summary }}</p><code>{{ p.tech }}</code></div>
+      <article class="project">
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.summary }}</p>
+        <div class="tags">
+          {% for t in p.tech_list %}<span class="tag">{{ t }}</span>{% endfor %}
+        </div>
+      </article>
     {% endfor %}
   </div>
-  <p><a href="{% url 'portfolio:projects' %}">전체 프로젝트 보기 →</a></p>
+  <p class="more"><a href="{% url 'portfolio:projects' %}">전체 프로젝트 보기 →</a></p>
 </section>
 
-<section class="card">
-  <h3>최근 게시글</h3>
-  <ul>
+{% if recent_posts %}
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow">Blog</p>
+    <h2>최근 글</h2>
+  </div>
+  <ul class="post-list">
     {% for post in recent_posts %}
-      <li><a href="{% url 'board:detail' post.pk %}">{{ post.title }}</a>
-        {% if post.is_scenario_clue %}<span class="badge warn">시나리오 단서</span>{% endif %}
+      <li>
+        <a href="{% url 'board:detail' post.pk %}">{{ post.title }}</a>
+        <span class="when">{{ post.created_at|date:"Y.m.d" }}</span>
       </li>
     {% endfor %}
   </ul>
 </section>
+{% endif %}
 {% endblock %}

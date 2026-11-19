@@ -1,16 +1,21 @@
 {% extends "base.html" %}
-{% block title %}프로젝트{% endblock %}
+{% block title %}프로젝트 · 오주성{% endblock %}
 {% block content %}
-<section class="card">
-  <h2>프로젝트</h2>
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow">Work</p>
+    <h2>프로젝트</h2>
+  </div>
   <div class="grid">
     {% for p in projects %}
-      <div class="card">
-        <h4>{{ p.title }}</h4>
-        <p class="muted">{{ p.summary }}</p>
-        <p>{{ p.description }}</p>
-        <code>{{ p.tech }}</code>
-      </div>
+      <article class="project">
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.summary }}</p>
+        {% if p.description %}<p class="muted">{{ p.description }}</p>{% endif %}
+        <div class="tags">
+          {% for t in p.tech_list %}<span class="tag">{{ t }}</span>{% endfor %}
+        </div>
+      </article>
     {% empty %}
       <p class="muted">등록된 프로젝트가 없습니다.</p>
     {% endfor %}

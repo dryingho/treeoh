@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block title %}{{ post.title }}{% endblock %}
 {% block content %}
-<section class="card {% if post.is_scenario_clue %}scenario-clue{% endif %}">
-  <h2>{{ post.title }}</h2>
-  <p class="muted">{{ post.author_name }} · {{ post.created_at|date:"Y-m-d H:i" }}</p>
-  <p>{{ post.body|linebreaksbr }}</p>
+<section class="section">
+  <p class="eyebrow">Blog</p>
+  <article class="card">
+    <h2>{{ post.title }}</h2>
+    <p class="muted">{{ post.author_name }} · {{ post.created_at|date:"Y-m-d H:i" }}</p>
+    <p>{{ post.body|linebreaksbr }}</p>
+  </article>
 </section>
 
 <section class="card">

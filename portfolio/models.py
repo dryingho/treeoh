@@ -15,6 +15,11 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+    # "React, Django" -> ["React", "Django"] (템플릿에서 태그로 표시)
+    @property
+    def tech_list(self):
+        return [t.strip() for t in self.tech.split(",") if t.strip()]
+
 
 # 메인 페이지 링크 (공격 때 주소가 바뀌는 대상)
 class SiteLink(models.Model):

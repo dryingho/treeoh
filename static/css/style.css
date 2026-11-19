@@ -1,54 +1,137 @@
-/* portfolio-incident-lab - 단순 CSS (외부 CDN 미사용) */
+/* 오주성 · Portfolio — 순수 CSS (외부 CDN 미사용) */
 :root{
-  --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --text:#e6e8ee;
-  --muted:#9aa3b2; --line:#2a2f3a; --accent:#5aa0ff; --warn:#ffcc55;
-  --danger:#ff6b6b; --ok:#54d08a;
+  --bg:#0a0b0f; --bg-soft:#0f1117; --panel:#14171f; --panel-2:#1a1e27;
+  --text:#eceef3; --muted:#99a2b3; --line:#242a35;
+  --accent:#7aa2ff; --accent-2:#b78bff;
+  --warn:#ffcc66; --danger:#ff7a7a; --ok:#5ad19a;
+  --radius:14px; --maxw:1040px;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:"Segoe UI","Malgun Gothic",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
+html{scroll-behavior:smooth}
+html,body{overflow-x:hidden}
+body{
+  margin:0;color:var(--text);line-height:1.65;
+  font-family:"Segoe UI","Malgun Gothic",-apple-system,BlinkMacSystemFont,Roboto,sans-serif;
+  background:
+    radial-gradient(900px 500px at 85% -5%, rgba(183,139,255,.08), transparent 60%),
+    radial-gradient(1000px 600px at 10% -10%, rgba(122,162,255,.10), transparent 55%),
+    var(--bg);
+  background-attachment:fixed;
+}
+a{color:var(--accent);text-decoration:none;transition:color .15s}
+a:hover{color:#a9c3ff}
+h1,h2,h3,h4{line-height:1.25;letter-spacing:-.01em}
 
-.lab-banner{padding:8px 16px;font-size:13px;background:#3a2a00;color:var(--warn);border-bottom:1px solid var(--line)}
-.lab-banner.lab-vulnerable{background:#3a0f0f;color:#ffb3b3}
-.lab-banner.lab-fixed{background:#0f2a1a;color:#b6f0cf}
-.lab-mode,.lab-flag{margin-left:14px;color:inherit;opacity:.9}
+/* ───── 헤더 / 내비 ───── */
+.site-header{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:26px;
+  padding:14px 22px;background:rgba(12,14,19,.72);
+  backdrop-filter:saturate(160%) blur(12px);
+  border-bottom:1px solid var(--line);flex-wrap:wrap;
+}
+.brand{font-weight:800;font-size:18px;color:var(--text);letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.brand::before{content:"";width:10px;height:10px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 0 14px rgba(122,162,255,.7)}
+.site-header nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.site-header nav a{color:var(--muted);font-size:14px;font-weight:500;padding:7px 12px;border-radius:9px;transition:all .15s}
+.site-header nav a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.site-header nav a.active{color:var(--text);background:rgba(122,162,255,.14)}
+.site-header nav a.cta{color:var(--text);border:1px solid var(--line)}
 
-.site-header{display:flex;align-items:center;gap:20px;padding:14px 22px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
-.brand{font-weight:700;font-size:18px}
-.site-header nav{display:flex;gap:16px;flex-wrap:wrap}
+/* ───── 히어로 (전체 폭으로 빠짐) ───── */
+.hero{position:relative;overflow:hidden;text-align:center;padding:92px 16px 76px;border-bottom:1px solid var(--line);
+  width:100vw;margin-left:calc(50% - 50vw);margin-top:-28px}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(50% 120% at 50% -20%, rgba(122,162,255,.20), transparent 60%),
+    radial-gradient(40% 90% at 78% 8%, rgba(183,139,255,.16), transparent 60%);}
+.hero-inner{max-width:720px;margin:0 auto}
+.hero-avatar{width:104px;height:104px;border-radius:50%;object-fit:cover;margin:0 auto 22px;
+  display:grid;place-items:center;font-size:40px;font-weight:800;color:#0b0d12;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  box-shadow:0 10px 40px rgba(122,162,255,.35);border:3px solid rgba(255,255,255,.1)}
+.eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:12px;font-weight:700;
+  color:var(--accent);margin:0 0 10px}
+.hero-title{font-size:clamp(34px,6vw,56px);font-weight:800;margin:0 0 14px;
+  background:linear-gradient(180deg,#fff,#b9c2d6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:clamp(16px,2.2vw,19px);color:var(--muted);margin:0 auto 28px;max-width:560px}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
-.content{max-width:960px;margin:24px auto;padding:0 16px}
-.site-footer{max-width:960px;margin:40px auto;padding:16px;color:var(--muted);border-top:1px solid var(--line);font-size:13px}
+/* ───── 레이아웃 / 섹션 ───── */
+.content{max-width:var(--maxw);margin:0 auto;padding:28px 16px 0}
+.section{padding:56px 0}
+.section-head{margin-bottom:26px}
+.section-head h2{font-size:clamp(24px,3.4vw,32px);margin:6px 0 0}
+.more{margin-top:22px}
+.more a{font-weight:600}
 
-.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:18px}
+/* ───── 카드 ───── */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:18px}
 .card h2,.card h3{margin-top:0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
 
-.messages{list-style:none;max-width:960px;margin:12px auto;padding:0 16px}
-.messages li{padding:10px 14px;border-radius:8px;margin-bottom:8px;border:1px solid var(--line)}
-.messages li.success{background:#10291c;color:var(--ok)}
-.messages li.error{background:#2a1212;color:var(--danger)}
-.messages li.warning{background:#33280a;color:var(--warn)}
+.project{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px;transition:transform .18s,border-color .18s,box-shadow .18s}
+.project:hover{transform:translateY(-4px);border-color:rgba(122,162,255,.5);box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.project h3,.project h4{margin:0 0 8px;font-size:18px}
+.project p{color:var(--muted);margin:0 0 16px}
+.tags{display:flex;gap:7px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:600;color:#cdd6ea;background:var(--panel-2);
+  border:1px solid var(--line);border-radius:999px;padding:4px 11px}
 
-input,textarea,select{width:100%;padding:9px 11px;background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--text);font-family:inherit}
-textarea{min-height:90px;resize:vertical}
-label{display:block;margin:10px 0 4px;color:var(--muted);font-size:14px}
-.btn{display:inline-block;padding:9px 16px;background:var(--accent);color:#06101f;border:none;border-radius:7px;font-weight:600;cursor:pointer}
-.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+/* ───── 게시글 리스트 ───── */
+.post-list{list-style:none;padding:0;margin:0}
+.post-list li{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;transition:border-color .15s}
+.post-list li:hover{border-color:rgba(122,162,255,.45)}
+.post-list a{color:var(--text);font-weight:600}
+.post-list .when{color:var(--muted);font-size:13px;white-space:nowrap}
+
+/* ───── 메시지 ───── */
+.messages{list-style:none;max-width:var(--maxw);margin:16px auto 0;padding:0 16px}
+.messages li{padding:11px 15px;border-radius:10px;margin-bottom:8px;border:1px solid var(--line)}
+.messages li.success{background:#11291d;color:var(--ok)}
+.messages li.error{background:#2a1313;color:var(--danger)}
+.messages li.warning{background:#312607;color:var(--warn)}
+
+/* ───── 폼 / 버튼 ───── */
+input,textarea,select{width:100%;padding:11px 13px;background:var(--panel-2);
+  border:1px solid var(--line);border-radius:10px;color:var(--text);font-family:inherit;font-size:15px;transition:border-color .15s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(122,162,255,.16)}
+textarea{min-height:120px;resize:vertical}
+label{display:block;margin:12px 0 5px;color:var(--muted);font-size:14px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#07101f;border:none;
+  border-radius:11px;font-weight:700;font-size:15px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(122,162,255,.3);color:#07101f}
+.btn.secondary{background:var(--panel-2);color:var(--text);border:1px solid var(--line)}
+.btn.secondary:hover{color:var(--text);border-color:rgba(122,162,255,.5)}
 .btn.danger{background:var(--danger);color:#1a0606}
 
+/* ───── 표 / 코드 ───── */
 table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{color:var(--muted);font-weight:600}
-code,pre{background:#0b0d12;border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-family:Consolas,monospace;font-size:13px}
-pre{padding:12px;overflow:auto}
+code,pre{background:#0b0d12;border:1px solid var(--line);border-radius:7px;padding:2px 7px;font-family:Consolas,monospace;font-size:13px}
+pre{padding:13px;overflow:auto}
 
-.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid var(--line)}
-.badge.warn{background:#33280a;color:var(--warn)}
-.badge.danger{background:#2a1212;color:var(--danger)}
-.badge.ok{background:#10291c;color:var(--ok)}
+/* ───── 뱃지 / 기타 ───── */
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;border:1px solid var(--line);color:var(--muted)}
+.badge.warn{background:#312607;color:var(--warn)}
+.badge.danger{background:#2a1313;color:var(--danger)}
+.badge.ok{background:#11291d;color:var(--ok)}
 .muted{color:var(--muted)}
-.comment{border-top:1px solid var(--line);padding:10px 0}
-.comment .meta{font-size:12px;color:var(--muted)}
-.scenario-clue{border-left:3px solid var(--warn);padding-left:12px}
+.comment{border-top:1px solid var(--line);padding:14px 0}
+.comment .meta{font-size:12px;color:var(--muted);margin-bottom:6px}
+
+/* ───── 푸터 ───── */
+.site-footer{max-width:var(--maxw);margin:40px auto 0;padding:28px 16px 40px;
+  color:var(--muted);border-top:1px solid var(--line);font-size:14px;
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.site-footer .disclaimer{font-size:12px;opacity:.8}
+
+@media (max-width:600px){
+  .site-header{gap:14px}
+  .site-header nav{margin-left:0;width:100%}
+  .section{padding:40px 0}
+}
