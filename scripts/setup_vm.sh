@@ -49,6 +49,12 @@ BEGIN
   ELSE
     ALTER ROLE ${POSTGRES_USER} PASSWORD '${POSTGRES_PASSWORD}';
   END IF;
+  -- 최소 권한 계정도 여기서(슈퍼유저 권한으로) 만든다. lab_admin 은 역할 생성 권한이 없다.
+  IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${LAB_LEAK_DB_USER}') THEN
+    CREATE ROLE ${LAB_LEAK_DB_USER} LOGIN PASSWORD '${LAB_LEAK_DB_PASSWORD}';
+  ELSE
+    ALTER ROLE ${LAB_LEAK_DB_USER} PASSWORD '${LAB_LEAK_DB_PASSWORD}';
+  END IF;
 END \$\$;
 SELECT 'CREATE DATABASE ${POSTGRES_DB} OWNER ${POSTGRES_USER}'
 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${POSTGRES_DB}')\gexec
@@ -61,17 +67,9 @@ PSQL="psql -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -U ${POSTGRES_USER} -d ${POST
 echo "[setup] migrate..."
 python manage.py migrate --noinput
 
-# ── 4) 최소 권한 계정 생성/권한 ──────────────────────────────
-echo "[setup] 최소 권한 계정(${LAB_LEAK_DB_USER}) 생성/권한..."
+# ── 4) 최소 권한 계정 권한 설정 (역할은 2단계에서 생성됨) ─────
+echo "[setup] 최소 권한 계정(${LAB_LEAK_DB_USER}) 권한 설정..."
 $PSQL -v ON_ERROR_STOP=1 <<SQL
-DO \$\$
-BEGIN
-  IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${LAB_LEAK_DB_USER}') THEN
-    CREATE ROLE ${LAB_LEAK_DB_USER} LOGIN PASSWORD '${LAB_LEAK_DB_PASSWORD}';
-  ELSE
-    ALTER ROLE ${LAB_LEAK_DB_USER} PASSWORD '${LAB_LEAK_DB_PASSWORD}';
-  END IF;
-END \$\$;
 REVOKE ALL ON ALL TABLES IN SCHEMA public FROM ${LAB_LEAK_DB_USER};
 GRANT CONNECT ON DATABASE ${POSTGRES_DB} TO ${LAB_LEAK_DB_USER};
 GRANT USAGE ON SCHEMA public TO ${LAB_LEAK_DB_USER};
