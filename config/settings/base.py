@@ -16,6 +16,17 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "lab-insecure-secret")
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,treeoh.dryingho.com").split(",")
 
+# CSRF: POST 요청(로그인 등)을 신뢰할 출처. scheme(https/http)까지 포함해야 한다.
+# 커스텀 도메인이나 HTTPS 로 접속하면 이 목록에 없을 때 403(CSRF 검증 실패)이 난다.
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    "DJANGO_CSRF_TRUSTED_ORIGINS",
+    "https://treeoh.dryingho.com,http://treeoh.dryingho.com",
+).split(",")
+
+# 리버스 프록시가 HTTPS 를 종단하고 X-Forwarded-Proto 를 넘겨줄 때,
+# Django 가 원 요청이 HTTPS 였음을 알도록 한다(CSRF/보안 쿠키 판단에 사용).
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
