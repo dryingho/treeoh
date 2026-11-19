@@ -73,7 +73,10 @@ def edit_links(request):
         if link.original_url == "":
             link.original_url = old_url
         link.url = request.POST.get("url", "")
-        link.is_defaced = link.url != link.original_url
+        # 정상 로그인한 운영자가 링크를 바꾸는 것은 '변조'가 아니다.
+        # 링크가 업로드 실행 주소(/uploads/run/)로 바뀐 경우만 변조로 표시한다
+        # (공격 시나리오 A: XSS 강제 요청으로 웹쉘 주소로 바뀌는 상황).
+        link.is_defaced = "/uploads/run/" in link.url
         link.updated_by = request.user.username
         link.save()
         save_log(request, "link_change", link.key, old_url, link.url)
