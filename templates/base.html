@@ -8,14 +8,6 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-  <div class="lab-banner lab-{{ LAB_MODE }}">
-    {{ LAB_WARNING }}
-    <span class="lab-mode">모드: <b>{{ LAB_MODE }}</b></span>
-    {% if LAB_MODE == 'vulnerable' %}
-      <span class="lab-flag">댓글 |safe={{ LAB_COMMENTS_RENDER_SAFE }} · HttpOnly={{ SESSION_COOKIE_HTTPONLY }}</span>
-    {% endif %}
-  </div>
-
   <header class="site-header">
     <a class="brand" href="{% url 'portfolio:home' %}">오주성 · Portfolio</a>
     <nav>
