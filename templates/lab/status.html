@@ -3,7 +3,7 @@
 {% block content %}
 <section class="card">
   <h2>실습 상태 확인</h2>
-  <p class="muted">공격을 수행하지 않습니다. 각 단계의 '관측 가능한 흔적'만 보여줍니다. (JSON: <a href="?format=json">?format=json</a>)</p>
+  <p class="muted">공격을 수행하지 않습니다. 각 단계의 '관측 가능한 흔적'만 보여줍니다.</p>
   <p>현재 모드: <span class="badge {% if data.mode == 'vulnerable' %}danger{% elif data.mode == 'fixed' %}ok{% endif %}">{{ data.mode }}</span></p>
 </section>
 
