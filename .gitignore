@@ -10,7 +10,7 @@ venv/
 local_settings.py
 
 # 환경 변수와 로컬 설정
-#/.env
+/.env
 /.env.*
 !/.env.example
 
