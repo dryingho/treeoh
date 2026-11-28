@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}오주성 포트폴리오{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v={% now 'U' %}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{% url 'portfolio:home' %}">오주성</a>
+    <nav>
+      <a href="{% url 'portfolio:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">홈</a>
+      <a href="{% url 'portfolio:about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">소개</a>
+      <a href="{% url 'board:list' %}" class="{% if request.resolver_match.app_name == 'board' %}active{% endif %}">블로그</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'operator:dashboard' %}" class="cta">운영자</a>
+        <a href="{% url 'operator:logout' %}">로그아웃</a>
+      {% else %}
+        <a href="{% url 'operator:login' %}" class="cta">로그인</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 오주성 · Portfolio</span>
+  </footer>
+</body>
+</html>

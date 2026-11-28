@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Django
+*.log
+local_settings.py
+
+# 환경 변수와 로컬 설정
+#/.env
+/.env.*
+!/.env.example
+
+# 업로드/증거 (실습 런타임 데이터) - 저장소에 커밋하지 않음
+/shared/uploads/avatars/*
+/shared/uploads/_evidence/*
+!/shared/uploads/avatars/.gitkeep
+!/shared/uploads/_evidence/.gitkeep
+
+# SQLite DB (런타임 생성, 커밋하지 않음)
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-shm
+*.sqlite3-wal
+
+# collectstatic 산출물
+staticfiles/
+
+# git 이력 노출 실습 저장소(스크립트로 생성)
+/git_exposure_demo/
+
+# 로컬 보안 실습 자료와 관리 명령
+/example_payload/
+/scripts/attacker_collector.py
+/lab/management/commands/seed_lab.py
+/lab/management/commands/reset_lab.py
+
+# OS
+.DS_Store
+Thumbs.db

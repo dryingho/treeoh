@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}글쓰기 · 블로그{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow">Blog</p>
+    <h2>글쓰기</h2>
+  </div>
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      <label>제목</label>
+      <input type="text" name="title" maxlength="200" required autofocus>
+      <label>내용</label>
+      <textarea name="body" rows="10"></textarea>
+      <label style="display:flex;align-items:center;gap:8px;margin-top:14px">
+        <input type="checkbox" name="is_notice" style="width:auto"> 공지로 등록
+      </label>
+      <p style="margin-top:16px">
+        <button class="btn" type="submit">등록</button>
+        <a class="btn secondary" href="{% url 'board:list' %}">취소</a>
+      </p>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /operator/
+Disallow: /operator/audit/
+Disallow: /uploads/avatar/
+Disallow: /media/avatars/

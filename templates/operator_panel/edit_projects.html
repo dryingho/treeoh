@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}대표 프로젝트 수정{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>대표 프로젝트 수정</h2>
+  <p class="muted">홈 메인의 '대표 프로젝트' 미리보기에 들어가는 내용입니다.
+    표시 순서(order)가 작은 것부터 앞의 3개가 홈에 노출됩니다.</p>
+
+  {% for p in projects %}
+    <form method="post" style="border-top:1px solid var(--line);padding:12px 0">
+      {% csrf_token %}
+      <input type="hidden" name="id" value="{{ p.id }}">
+      <label>제목</label>
+      <input type="text" name="title" value="{{ p.title }}">
+      <label>요약</label>
+      <input type="text" name="summary" value="{{ p.summary }}">
+      <label>기술 (쉼표로 구분 → 태그로 표시)</label>
+      <input type="text" name="tech" value="{{ p.tech }}">
+      <label>링크 (카드 클릭 시 이동, 비우면 링크 없음)</label>
+      <input type="text" name="link" value="{{ p.link }}" placeholder="https://...">
+      <label>표시 순서(order)</label>
+      <input type="number" name="order" value="{{ p.order }}" style="width:120px">
+      <p>
+        <button class="btn" type="submit" name="form_action" value="save">저장</button>
+        <button class="btn secondary" type="submit" name="form_action" value="delete"
+                onclick="return confirm('이 프로젝트를 삭제할까요?')">삭제</button>
+      </p>
+    </form>
+  {% empty %}
+    <p class="muted">등록된 프로젝트가 없습니다. 아래에서 추가하세요.</p>
+  {% endfor %}
+</section>
+
+<section class="card">
+  <h3>새 프로젝트 추가</h3>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="form_action" value="add">
+    <label>제목</label>
+    <input type="text" name="title" placeholder="프로젝트 제목">
+    <label>요약</label>
+    <input type="text" name="summary" placeholder="한 줄 요약">
+    <label>기술 (쉼표로 구분)</label>
+    <input type="text" name="tech" placeholder="React, Django">
+    <label>링크 (카드 클릭 시 이동)</label>
+    <input type="text" name="link" placeholder="https://...">
+    <label>표시 순서(order)</label>
+    <input type="number" name="order" value="0" style="width:120px">
+    <p><button class="btn" type="submit">추가</button></p>
+  </form>
+</section>
+{% endblock %}

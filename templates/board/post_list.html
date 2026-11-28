@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}블로그 · 오주성{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="section-head" style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+    <div>
+      <p class="eyebrow">Blog</p>
+      <h2>블로그</h2>
+    </div>
+    {% if user.is_authenticated %}
+      <a class="btn" href="{% url 'board:create' %}">글쓰기</a>
+    {% endif %}
+  </div>
+  <ul class="post-list">
+    {% for post in posts %}
+      <li>
+        <a href="{% url 'board:detail' post.pk %}">
+          {% if post.is_notice %}<span class="badge">공지</span> {% endif %}{{ post.title }}
+        </a>
+        <span class="when">{{ post.author_name }} · {{ post.created_at|date:"Y.m.d" }}</span>
+      </li>
+    {% empty %}
+      <li class="muted">아직 글이 없습니다.</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}
